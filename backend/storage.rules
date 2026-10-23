@@ -1,0 +1,46 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn() &&
+        firestore.exists(/databases/(default)/documents/users/$(request.auth.uid)) &&
+        firestore.get(/databases/(default)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    function canReadSightingImages() {
+      return isSignedIn();
+    }
+
+    function isDraftSightingOwner(walkId, sightingId) {
+      return isSignedIn() &&
+        firestore.exists(/databases/(default)/documents/walks/$(walkId)) &&
+        firestore.exists(/databases/(default)/documents/sightings/$(sightingId)) &&
+        firestore.get(/databases/(default)/documents/walks/$(walkId)).data.group_leader_id == request.auth.uid &&
+        firestore.get(/databases/(default)/documents/sightings/$(sightingId)).data.walk_id == walkId &&
+        firestore.get(/databases/(default)/documents/sightings/$(sightingId)).data.recorded_by_user_id == request.auth.uid &&
+        firestore.get(/databases/(default)/documents/sightings/$(sightingId)).data.submission_status == 'DRAFT';
+    }
+
+    function isAllowedImageUpload() {
+      return request.resource != null &&
+        request.resource.contentType.matches('image/.*') &&
+        request.resource.size < 5 * 1024 * 1024;
+    }
+
+    match /sightings/{walkId}/{sightingId}/{allPaths=**} {
+      allow read: if canReadSightingImages();
+      allow create: if isDraftSightingOwner(walkId, sightingId) && isAllowedImageUpload();
+      allow delete: if isDraftSightingOwner(walkId, sightingId) || isAdmin();
+      allow update: if false;
+    }
+
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}
