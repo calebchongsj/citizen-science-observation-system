@@ -1,0 +1,4 @@
+/* Global styles - imported once in main.tsx */
+@import './reset.css';
+@import './variables.css';
+@import './base.css';

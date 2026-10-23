@@ -1,0 +1,3689 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "RafflesGo API",
+    "description": "RafflesGo backend API",
+    "version": "1.0.0"
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {}
+  },
+  "paths": {
+    "/api/health": {
+      "get": {
+        "operationId": "checkHealth",
+        "tags": [
+          "RafflesGo"
+        ],
+        "description": "Check API health",
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/hello/{name}": {
+      "get": {
+        "operationId": "sayHello",
+        "tags": [
+          "RafflesGo"
+        ],
+        "description": "Say hello to a user",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "name",
+            "required": true
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "message"
+                  ],
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/me": {
+      "get": {
+        "operationId": "getCurrentUser",
+        "tags": [
+          "RafflesGo"
+        ],
+        "description": "Get current authenticated user info",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "uid",
+                    "role"
+                  ],
+                  "properties": {
+                    "uid": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "role": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "enum": [
+                            "user"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "admin"
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users": {
+      "get": {
+        "operationId": "listUsers",
+        "tags": [
+          "RafflesGo"
+        ],
+        "description": "List all users (admin only)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "users"
+                  ],
+                  "properties": {
+                    "users": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "uid",
+                          "disabled",
+                          "role"
+                        ],
+                        "properties": {
+                          "uid": {
+                            "type": "string"
+                          },
+                          "email": {
+                            "type": "string"
+                          },
+                          "displayName": {
+                            "type": "string"
+                          },
+                          "photoURL": {
+                            "type": "string"
+                          },
+                          "disabled": {
+                            "type": "boolean"
+                          },
+                          "createdAt": {
+                            "type": "string"
+                          },
+                          "role": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "user"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "admin"
+                                ]
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/stats": {
+      "get": {
+        "operationId": "listUsersWithStats",
+        "tags": [
+          "RafflesGo"
+        ],
+        "description": "List all users with stats (admin only)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "users",
+                    "summary"
+                  ],
+                  "properties": {
+                    "users": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "uid",
+                          "disabled",
+                          "role",
+                          "walks_registered",
+                          "upcoming_walks",
+                          "completed_walks",
+                          "sightings_submitted"
+                        ],
+                        "properties": {
+                          "uid": {
+                            "type": "string"
+                          },
+                          "email": {
+                            "type": "string"
+                          },
+                          "displayName": {
+                            "type": "string"
+                          },
+                          "photoURL": {
+                            "type": "string"
+                          },
+                          "disabled": {
+                            "type": "boolean"
+                          },
+                          "createdAt": {
+                            "type": "string"
+                          },
+                          "role": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "user"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "admin"
+                                ]
+                              }
+                            ]
+                          },
+                          "walks_registered": {
+                            "type": "number"
+                          },
+                          "upcoming_walks": {
+                            "type": "number"
+                          },
+                          "completed_walks": {
+                            "type": "number"
+                          },
+                          "sightings_submitted": {
+                            "type": "number"
+                          }
+                        }
+                      }
+                    },
+                    "summary": {
+                      "type": "object",
+                      "required": [
+                        "total_users",
+                        "total_volunteers",
+                        "total_admins",
+                        "total_disabled",
+                        "total_existing_walks",
+                        "total_upcoming_walks",
+                        "total_completed_walks",
+                        "total_abandoned_walks"
+                      ],
+                      "properties": {
+                        "total_users": {
+                          "type": "number"
+                        },
+                        "total_volunteers": {
+                          "type": "number"
+                        },
+                        "total_admins": {
+                          "type": "number"
+                        },
+                        "total_disabled": {
+                          "type": "number"
+                        },
+                        "total_existing_walks": {
+                          "type": "number"
+                        },
+                        "total_upcoming_walks": {
+                          "type": "number"
+                        },
+                        "total_completed_walks": {
+                          "type": "number"
+                        },
+                        "total_abandoned_walks": {
+                          "type": "number"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/change-role": {
+      "post": {
+        "operationId": "changeUserRole",
+        "tags": [
+          "RafflesGo"
+        ],
+        "description": "Change a user role (admin only)",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email",
+                  "role"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "role": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "user"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "admin"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "success",
+                    "email",
+                    "role"
+                  ],
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "role": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "enum": [
+                            "user"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "admin"
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/{uid}/disabled": {
+      "patch": {
+        "operationId": "setUserDisabled",
+        "tags": [
+          "RafflesGo"
+        ],
+        "description": "Deactivate or reactivate a user (admin only)",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "disabled"
+                ],
+                "properties": {
+                  "disabled": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "uid",
+            "required": true
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "success",
+                    "uid",
+                    "disabled"
+                  ],
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "uid": {
+                      "type": "string"
+                    },
+                    "disabled": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/walks/{walkId}/sightings/{sightingId}/upload-url": {
+      "post": {
+        "operationId": "generateSightingImageUploadUrl",
+        "tags": [
+          "RafflesGo"
+        ],
+        "description": "Generate a signed upload URL for a sighting image (group leader only)",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "filename",
+                  "contentType"
+                ],
+                "properties": {
+                  "filename": {
+                    "type": "string"
+                  },
+                  "contentType": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "walkId",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "sightingId",
+            "required": true
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "uploadUrl",
+                    "storagePath",
+                    "downloadUrl"
+                  ],
+                  "properties": {
+                    "uploadUrl": {
+                      "type": "string"
+                    },
+                    "storagePath": {
+                      "type": "string"
+                    },
+                    "downloadUrl": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/walks/{walkId}/sightings/{sightingId}/images": {
+      "post": {
+        "operationId": "addSightingImageReference",
+        "tags": [
+          "RafflesGo"
+        ],
+        "description": "Persist uploaded image URL into sightings.images_references (group leader only)",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "imageUrl"
+                ],
+                "properties": {
+                  "imageUrl": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "walkId",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "sightingId",
+            "required": true
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "sighting_id",
+                    "walk_id",
+                    "recorded_by_user_id",
+                    "adult_count",
+                    "juvenile_count",
+                    "infant_count",
+                    "behavior",
+                    "notes",
+                    "images_references",
+                    "observation_timestamp",
+                    "latitude",
+                    "longitude",
+                    "submission_status"
+                  ],
+                  "properties": {
+                    "sighting_id": {
+                      "type": "string"
+                    },
+                    "walk_id": {
+                      "type": "string"
+                    },
+                    "recorded_by_user_id": {
+                      "type": "string"
+                    },
+                    "adult_count": {
+                      "type": "number"
+                    },
+                    "juvenile_count": {
+                      "type": "number"
+                    },
+                    "infant_count": {
+                      "type": "number"
+                    },
+                    "behavior": {
+                      "type": "string"
+                    },
+                    "notes": {
+                      "type": "string"
+                    },
+                    "images_references": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "observation_timestamp": {
+                      "type": "string"
+                    },
+                    "last_edited_at": {
+                      "type": "string"
+                    },
+                    "latitude": {
+                      "type": "number"
+                    },
+                    "longitude": {
+                      "type": "number"
+                    },
+                    "submission_status": {
+                      "type": "string",
+                      "enum": [
+                        "DRAFT",
+                        "SUBMITTED"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/walks": {
+      "post": {
+        "operationId": "createWalk",
+        "tags": [
+          "RafflesGo"
+        ],
+        "description": "Create a new survey walk (admin only)",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "route_info",
+                  "date_time",
+                  "max_slots"
+                ],
+                "properties": {
+                  "route_info": {
+                    "type": "array",
+                    "items": {
+                      "type": "array",
+                      "items": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "number"
+                        }
+                      ],
+                      "additionalItems": false,
+                      "minItems": 2,
+                      "maxItems": 2
+                    }
+                  },
+                  "date_time": {
+                    "type": "string"
+                  },
+                  "scheduled_end_time": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "max_slots": {
+                    "minimum": 1,
+                    "type": "number"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "recurrence": {
+                    "type": "object",
+                    "required": [
+                      "repeat_weekday",
+                      "end_date"
+                    ],
+                    "properties": {
+                      "repeat_weekday": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "enum": [
+                              "SUNDAY"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "MONDAY"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "TUESDAY"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "WEDNESDAY"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "THURSDAY"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "FRIDAY"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "SATURDAY"
+                            ]
+                          }
+                        ]
+                      },
+                      "end_date": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "walks",
+                    "created_count"
+                  ],
+                  "properties": {
+                    "walks": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "walk_id",
+                          "route_info",
+                          "date_time",
+                          "max_slots",
+                          "group_leader_id",
+                          "status",
+                          "has_sightings"
+                        ],
+                        "properties": {
+                          "walk_id": {
+                            "type": "string"
+                          },
+                          "route_info": {
+                            "type": "array",
+                            "items": {
+                              "type": "array",
+                              "items": [
+                                {
+                                  "type": "number"
+                                },
+                                {
+                                  "type": "number"
+                                }
+                              ],
+                              "additionalItems": false,
+                              "minItems": 2,
+                              "maxItems": 2
+                            }
+                          },
+                          "date_time": {
+                            "type": "string"
+                          },
+                          "scheduled_end_time": {
+                            "type": "string"
+                          },
+                          "max_slots": {
+                            "type": "number"
+                          },
+                          "group_leader_id": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "status": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "UPCOMING"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "IN_PROGRESS"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "COMPLETED"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "ABANDONED"
+                                ]
+                              }
+                            ]
+                          },
+                          "has_sightings": {
+                            "type": "boolean"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "started_at": {
+                            "type": "string"
+                          },
+                          "ended_at": {
+                            "type": "string"
+                          },
+                          "current_participant_count": {
+                            "type": "number"
+                          },
+                          "participants": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "required": [
+                                "user_id",
+                                "display_name",
+                                "is_designated_submitter",
+                                "disabled"
+                              ],
+                              "properties": {
+                                "user_id": {
+                                  "type": "string"
+                                },
+                                "display_name": {
+                                  "type": "string"
+                                },
+                                "is_designated_submitter": {
+                                  "type": "boolean"
+                                },
+                                "disabled": {
+                                  "type": "boolean"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "created_count": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "listWalks",
+        "tags": [
+          "RafflesGo"
+        ],
+        "description": "List all walks",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "walk_id",
+                      "route_info",
+                      "date_time",
+                      "max_slots",
+                      "group_leader_id",
+                      "status",
+                      "has_sightings"
+                    ],
+                    "properties": {
+                      "walk_id": {
+                        "type": "string"
+                      },
+                      "route_info": {
+                        "type": "array",
+                        "items": {
+                          "type": "array",
+                          "items": [
+                            {
+                              "type": "number"
+                            },
+                            {
+                              "type": "number"
+                            }
+                          ],
+                          "additionalItems": false,
+                          "minItems": 2,
+                          "maxItems": 2
+                        }
+                      },
+                      "date_time": {
+                        "type": "string"
+                      },
+                      "scheduled_end_time": {
+                        "type": "string"
+                      },
+                      "max_slots": {
+                        "type": "number"
+                      },
+                      "group_leader_id": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "status": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "enum": [
+                              "UPCOMING"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "IN_PROGRESS"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "COMPLETED"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "ABANDONED"
+                            ]
+                          }
+                        ]
+                      },
+                      "has_sightings": {
+                        "type": "boolean"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "started_at": {
+                        "type": "string"
+                      },
+                      "ended_at": {
+                        "type": "string"
+                      },
+                      "current_participant_count": {
+                        "type": "number"
+                      },
+                      "participants": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "required": [
+                            "user_id",
+                            "display_name",
+                            "is_designated_submitter",
+                            "disabled"
+                          ],
+                          "properties": {
+                            "user_id": {
+                              "type": "string"
+                            },
+                            "display_name": {
+                              "type": "string"
+                            },
+                            "is_designated_submitter": {
+                              "type": "boolean"
+                            },
+                            "disabled": {
+                              "type": "boolean"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/walks/{id}": {
+      "get": {
+        "operationId": "getWalkById",
+        "tags": [
+          "RafflesGo"
+        ],
+        "description": "Get walk by ID",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "walk_id",
+                    "route_info",
+                    "date_time",
+                    "max_slots",
+                    "group_leader_id",
+                    "status",
+                    "has_sightings"
+                  ],
+                  "properties": {
+                    "walk_id": {
+                      "type": "string"
+                    },
+                    "route_info": {
+                      "type": "array",
+                      "items": {
+                        "type": "array",
+                        "items": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "number"
+                          }
+                        ],
+                        "additionalItems": false,
+                        "minItems": 2,
+                        "maxItems": 2
+                      }
+                    },
+                    "date_time": {
+                      "type": "string"
+                    },
+                    "scheduled_end_time": {
+                      "type": "string"
+                    },
+                    "max_slots": {
+                      "type": "number"
+                    },
+                    "group_leader_id": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "status": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "enum": [
+                            "UPCOMING"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "IN_PROGRESS"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "COMPLETED"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "ABANDONED"
+                          ]
+                        }
+                      ]
+                    },
+                    "has_sightings": {
+                      "type": "boolean"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "started_at": {
+                      "type": "string"
+                    },
+                    "ended_at": {
+                      "type": "string"
+                    },
+                    "current_participant_count": {
+                      "type": "number"
+                    },
+                    "participants": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "user_id",
+                          "display_name",
+                          "is_designated_submitter",
+                          "disabled"
+                        ],
+                        "properties": {
+                          "user_id": {
+                            "type": "string"
+                          },
+                          "display_name": {
+                            "type": "string"
+                          },
+                          "is_designated_submitter": {
+                            "type": "boolean"
+                          },
+                          "disabled": {
+                            "type": "boolean"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateWalk",
+        "tags": [
+          "RafflesGo"
+        ],
+        "description": "Update a walk (admin only)",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "route_info",
+                  "date_time",
+                  "max_slots"
+                ],
+                "properties": {
+                  "route_info": {
+                    "type": "array",
+                    "items": {
+                      "type": "array",
+                      "items": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "number"
+                        }
+                      ],
+                      "additionalItems": false,
+                      "minItems": 2,
+                      "maxItems": 2
+                    }
+                  },
+                  "date_time": {
+                    "type": "string"
+                  },
+                  "scheduled_end_time": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "max_slots": {
+                    "minimum": 1,
+                    "type": "number"
+                  },
+                  "name": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "walk_id",
+                    "route_info",
+                    "date_time",
+                    "max_slots",
+                    "group_leader_id",
+                    "status",
+                    "has_sightings"
+                  ],
+                  "properties": {
+                    "walk_id": {
+                      "type": "string"
+                    },
+                    "route_info": {
+                      "type": "array",
+                      "items": {
+                        "type": "array",
+                        "items": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "number"
+                          }
+                        ],
+                        "additionalItems": false,
+                        "minItems": 2,
+                        "maxItems": 2
+                      }
+                    },
+                    "date_time": {
+                      "type": "string"
+                    },
+                    "scheduled_end_time": {
+                      "type": "string"
+                    },
+                    "max_slots": {
+                      "type": "number"
+                    },
+                    "group_leader_id": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "status": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "enum": [
+                            "UPCOMING"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "IN_PROGRESS"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "COMPLETED"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "ABANDONED"
+                          ]
+                        }
+                      ]
+                    },
+                    "has_sightings": {
+                      "type": "boolean"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "started_at": {
+                      "type": "string"
+                    },
+                    "ended_at": {
+                      "type": "string"
+                    },
+                    "current_participant_count": {
+                      "type": "number"
+                    },
+                    "participants": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "user_id",
+                          "display_name",
+                          "is_designated_submitter",
+                          "disabled"
+                        ],
+                        "properties": {
+                          "user_id": {
+                            "type": "string"
+                          },
+                          "display_name": {
+                            "type": "string"
+                          },
+                          "is_designated_submitter": {
+                            "type": "boolean"
+                          },
+                          "disabled": {
+                            "type": "boolean"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteWalk",
+        "tags": [
+          "RafflesGo"
+        ],
+        "description": "Delete a walk (admin only)",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/api/walks/{id}/start": {
+      "post": {
+        "operationId": "startWalk",
+        "tags": [
+          "RafflesGo"
+        ],
+        "description": "Start a walk (admin or designated submitter only)",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "walk_id",
+                    "route_info",
+                    "date_time",
+                    "max_slots",
+                    "group_leader_id",
+                    "status",
+                    "has_sightings"
+                  ],
+                  "properties": {
+                    "walk_id": {
+                      "type": "string"
+                    },
+                    "route_info": {
+                      "type": "array",
+                      "items": {
+                        "type": "array",
+                        "items": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "number"
+                          }
+                        ],
+                        "additionalItems": false,
+                        "minItems": 2,
+                        "maxItems": 2
+                      }
+                    },
+                    "date_time": {
+                      "type": "string"
+                    },
+                    "scheduled_end_time": {
+                      "type": "string"
+                    },
+                    "max_slots": {
+                      "type": "number"
+                    },
+                    "group_leader_id": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "status": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "enum": [
+                            "UPCOMING"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "IN_PROGRESS"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "COMPLETED"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "ABANDONED"
+                          ]
+                        }
+                      ]
+                    },
+                    "has_sightings": {
+                      "type": "boolean"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "started_at": {
+                      "type": "string"
+                    },
+                    "ended_at": {
+                      "type": "string"
+                    },
+                    "current_participant_count": {
+                      "type": "number"
+                    },
+                    "participants": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "user_id",
+                          "display_name",
+                          "is_designated_submitter",
+                          "disabled"
+                        ],
+                        "properties": {
+                          "user_id": {
+                            "type": "string"
+                          },
+                          "display_name": {
+                            "type": "string"
+                          },
+                          "is_designated_submitter": {
+                            "type": "boolean"
+                          },
+                          "disabled": {
+                            "type": "boolean"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/walks/{id}/end": {
+      "post": {
+        "operationId": "endWalk",
+        "tags": [
+          "RafflesGo"
+        ],
+        "description": "End a walk (admin or designated submitter only)",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "walk_id",
+                    "route_info",
+                    "date_time",
+                    "max_slots",
+                    "group_leader_id",
+                    "status",
+                    "has_sightings"
+                  ],
+                  "properties": {
+                    "walk_id": {
+                      "type": "string"
+                    },
+                    "route_info": {
+                      "type": "array",
+                      "items": {
+                        "type": "array",
+                        "items": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "number"
+                          }
+                        ],
+                        "additionalItems": false,
+                        "minItems": 2,
+                        "maxItems": 2
+                      }
+                    },
+                    "date_time": {
+                      "type": "string"
+                    },
+                    "scheduled_end_time": {
+                      "type": "string"
+                    },
+                    "max_slots": {
+                      "type": "number"
+                    },
+                    "group_leader_id": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "status": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "enum": [
+                            "UPCOMING"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "IN_PROGRESS"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "COMPLETED"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "ABANDONED"
+                          ]
+                        }
+                      ]
+                    },
+                    "has_sightings": {
+                      "type": "boolean"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "started_at": {
+                      "type": "string"
+                    },
+                    "ended_at": {
+                      "type": "string"
+                    },
+                    "current_participant_count": {
+                      "type": "number"
+                    },
+                    "participants": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "user_id",
+                          "display_name",
+                          "is_designated_submitter",
+                          "disabled"
+                        ],
+                        "properties": {
+                          "user_id": {
+                            "type": "string"
+                          },
+                          "display_name": {
+                            "type": "string"
+                          },
+                          "is_designated_submitter": {
+                            "type": "boolean"
+                          },
+                          "disabled": {
+                            "type": "boolean"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/walks/{walkId}/participate": {
+      "post": {
+        "operationId": "signUpForWalk",
+        "tags": [
+          "RafflesGo"
+        ],
+        "description": "Sign up the authenticated volunteer for a walk",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "walkId",
+            "required": true
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "participation_id",
+                    "walk_id",
+                    "user_id",
+                    "attendance_status",
+                    "created_at"
+                  ],
+                  "properties": {
+                    "participation_id": {
+                      "type": "string"
+                    },
+                    "walk_id": {
+                      "type": "string"
+                    },
+                    "user_id": {
+                      "type": "string"
+                    },
+                    "attendance_status": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "enum": [
+                            "REGISTERED"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "ATTENDED"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "ABSENT"
+                          ]
+                        }
+                      ]
+                    },
+                    "created_at": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "withdrawFromWalk",
+        "tags": [
+          "RafflesGo"
+        ],
+        "description": "Withdraw the authenticated volunteer from a walk",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "walkId",
+            "required": true
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Default Response"
+          },
+          "400": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/walks/{walkId}/designated-submitter": {
+      "patch": {
+        "operationId": "updateDesignatedSubmitter",
+        "tags": [
+          "RafflesGo"
+        ],
+        "description": "Transfer designated submitter to another eligible participant",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "newSubmitterId"
+                ],
+                "properties": {
+                  "newSubmitterId": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "walkId",
+            "required": true
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "walk_id",
+                    "route_info",
+                    "date_time",
+                    "max_slots",
+                    "group_leader_id",
+                    "status",
+                    "has_sightings"
+                  ],
+                  "properties": {
+                    "walk_id": {
+                      "type": "string"
+                    },
+                    "route_info": {
+                      "type": "array",
+                      "items": {
+                        "type": "array",
+                        "items": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "number"
+                          }
+                        ],
+                        "additionalItems": false,
+                        "minItems": 2,
+                        "maxItems": 2
+                      }
+                    },
+                    "date_time": {
+                      "type": "string"
+                    },
+                    "scheduled_end_time": {
+                      "type": "string"
+                    },
+                    "max_slots": {
+                      "type": "number"
+                    },
+                    "group_leader_id": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "status": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "enum": [
+                            "UPCOMING"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "IN_PROGRESS"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "COMPLETED"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "ABANDONED"
+                          ]
+                        }
+                      ]
+                    },
+                    "has_sightings": {
+                      "type": "boolean"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "started_at": {
+                      "type": "string"
+                    },
+                    "ended_at": {
+                      "type": "string"
+                    },
+                    "current_participant_count": {
+                      "type": "number"
+                    },
+                    "participants": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "user_id",
+                          "display_name",
+                          "is_designated_submitter",
+                          "disabled"
+                        ],
+                        "properties": {
+                          "user_id": {
+                            "type": "string"
+                          },
+                          "display_name": {
+                            "type": "string"
+                          },
+                          "is_designated_submitter": {
+                            "type": "boolean"
+                          },
+                          "disabled": {
+                            "type": "boolean"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/walks/{walkId}/participants": {
+      "get": {
+        "operationId": "getWalkParticipants",
+        "tags": [
+          "RafflesGo"
+        ],
+        "description": "List participants for a walk (admin or walk participants only)",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "walkId",
+            "required": true
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "allOf": [
+                      {
+                        "type": "object",
+                        "required": [
+                          "participation_id",
+                          "walk_id",
+                          "user_id",
+                          "attendance_status",
+                          "created_at"
+                        ],
+                        "properties": {
+                          "participation_id": {
+                            "type": "string"
+                          },
+                          "walk_id": {
+                            "type": "string"
+                          },
+                          "user_id": {
+                            "type": "string"
+                          },
+                          "attendance_status": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "REGISTERED"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "ATTENDED"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "ABSENT"
+                                ]
+                              }
+                            ]
+                          },
+                          "created_at": {
+                            "type": "number"
+                          }
+                        }
+                      },
+                      {
+                        "type": "object",
+                        "required": [
+                          "disabled"
+                        ],
+                        "properties": {
+                          "disabled": {
+                            "type": "boolean"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/me/walks": {
+      "get": {
+        "operationId": "getMyWalks",
+        "tags": [
+          "RafflesGo"
+        ],
+        "description": "List all walks the authenticated user has signed up for",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "participation_id",
+                      "walk_id",
+                      "user_id",
+                      "attendance_status",
+                      "created_at",
+                      "group_leader_id",
+                      "walk_name",
+                      "status",
+                      "walk_date_time"
+                    ],
+                    "properties": {
+                      "participation_id": {
+                        "type": "string"
+                      },
+                      "walk_id": {
+                        "type": "string"
+                      },
+                      "user_id": {
+                        "type": "string"
+                      },
+                      "attendance_status": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "enum": [
+                              "REGISTERED"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "ATTENDED"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "ABSENT"
+                            ]
+                          }
+                        ]
+                      },
+                      "created_at": {
+                        "type": "number"
+                      },
+                      "group_leader_id": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "walk_name": {
+                        "type": "string"
+                      },
+                      "status": {
+                        "type": "string"
+                      },
+                      "walk_date_time": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/walks/{walkId}/sightings": {
+      "post": {
+        "operationId": "createSighting",
+        "tags": [
+          "RafflesGo"
+        ],
+        "description": "Create a sighting for a walk (group leader only)",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "adult_count",
+                  "juvenile_count",
+                  "infant_count",
+                  "behavior",
+                  "notes",
+                  "images_references",
+                  "latitude",
+                  "longitude"
+                ],
+                "properties": {
+                  "adult_count": {
+                    "type": "number"
+                  },
+                  "juvenile_count": {
+                    "type": "number"
+                  },
+                  "infant_count": {
+                    "type": "number"
+                  },
+                  "behavior": {
+                    "type": "string"
+                  },
+                  "notes": {
+                    "type": "string"
+                  },
+                  "images_references": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "observation_timestamp": {
+                    "type": "string"
+                  },
+                  "latitude": {
+                    "type": "number"
+                  },
+                  "longitude": {
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "walkId",
+            "required": true
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "sighting_id",
+                    "walk_id",
+                    "recorded_by_user_id",
+                    "adult_count",
+                    "juvenile_count",
+                    "infant_count",
+                    "behavior",
+                    "notes",
+                    "images_references",
+                    "observation_timestamp",
+                    "latitude",
+                    "longitude",
+                    "submission_status"
+                  ],
+                  "properties": {
+                    "sighting_id": {
+                      "type": "string"
+                    },
+                    "walk_id": {
+                      "type": "string"
+                    },
+                    "recorded_by_user_id": {
+                      "type": "string"
+                    },
+                    "adult_count": {
+                      "type": "number"
+                    },
+                    "juvenile_count": {
+                      "type": "number"
+                    },
+                    "infant_count": {
+                      "type": "number"
+                    },
+                    "behavior": {
+                      "type": "string"
+                    },
+                    "notes": {
+                      "type": "string"
+                    },
+                    "images_references": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "observation_timestamp": {
+                      "type": "string"
+                    },
+                    "last_edited_at": {
+                      "type": "string"
+                    },
+                    "latitude": {
+                      "type": "number"
+                    },
+                    "longitude": {
+                      "type": "number"
+                    },
+                    "submission_status": {
+                      "type": "string",
+                      "enum": [
+                        "DRAFT",
+                        "SUBMITTED"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "listSightingsForWalk",
+        "tags": [
+          "RafflesGo"
+        ],
+        "description": "List sightings for a walk (participants or admins)",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "walkId",
+            "required": true
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "sighting_id",
+                      "walk_id",
+                      "recorded_by_user_id",
+                      "adult_count",
+                      "juvenile_count",
+                      "infant_count",
+                      "behavior",
+                      "notes",
+                      "images_references",
+                      "observation_timestamp",
+                      "latitude",
+                      "longitude",
+                      "submission_status"
+                    ],
+                    "properties": {
+                      "sighting_id": {
+                        "type": "string"
+                      },
+                      "walk_id": {
+                        "type": "string"
+                      },
+                      "recorded_by_user_id": {
+                        "type": "string"
+                      },
+                      "adult_count": {
+                        "type": "number"
+                      },
+                      "juvenile_count": {
+                        "type": "number"
+                      },
+                      "infant_count": {
+                        "type": "number"
+                      },
+                      "behavior": {
+                        "type": "string"
+                      },
+                      "notes": {
+                        "type": "string"
+                      },
+                      "images_references": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "observation_timestamp": {
+                        "type": "string"
+                      },
+                      "last_edited_at": {
+                        "type": "string"
+                      },
+                      "latitude": {
+                        "type": "number"
+                      },
+                      "longitude": {
+                        "type": "number"
+                      },
+                      "submission_status": {
+                        "type": "string",
+                        "enum": [
+                          "DRAFT",
+                          "SUBMITTED"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/walks/{walkId}/sightings/{sightingId}": {
+      "patch": {
+        "operationId": "updateSighting",
+        "tags": [
+          "RafflesGo"
+        ],
+        "description": "Update a draft sighting (group leader only)",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "adult_count": {
+                    "type": "number"
+                  },
+                  "juvenile_count": {
+                    "type": "number"
+                  },
+                  "infant_count": {
+                    "type": "number"
+                  },
+                  "behavior": {
+                    "type": "string"
+                  },
+                  "notes": {
+                    "type": "string"
+                  },
+                  "images_references": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "observation_timestamp": {
+                    "type": "string"
+                  },
+                  "latitude": {
+                    "type": "number"
+                  },
+                  "longitude": {
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "walkId",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "sightingId",
+            "required": true
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "sighting_id",
+                    "walk_id",
+                    "recorded_by_user_id",
+                    "adult_count",
+                    "juvenile_count",
+                    "infant_count",
+                    "behavior",
+                    "notes",
+                    "images_references",
+                    "observation_timestamp",
+                    "latitude",
+                    "longitude",
+                    "submission_status"
+                  ],
+                  "properties": {
+                    "sighting_id": {
+                      "type": "string"
+                    },
+                    "walk_id": {
+                      "type": "string"
+                    },
+                    "recorded_by_user_id": {
+                      "type": "string"
+                    },
+                    "adult_count": {
+                      "type": "number"
+                    },
+                    "juvenile_count": {
+                      "type": "number"
+                    },
+                    "infant_count": {
+                      "type": "number"
+                    },
+                    "behavior": {
+                      "type": "string"
+                    },
+                    "notes": {
+                      "type": "string"
+                    },
+                    "images_references": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "observation_timestamp": {
+                      "type": "string"
+                    },
+                    "last_edited_at": {
+                      "type": "string"
+                    },
+                    "latitude": {
+                      "type": "number"
+                    },
+                    "longitude": {
+                      "type": "number"
+                    },
+                    "submission_status": {
+                      "type": "string",
+                      "enum": [
+                        "DRAFT",
+                        "SUBMITTED"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteSighting",
+        "tags": [
+          "RafflesGo"
+        ],
+        "description": "Delete a draft sighting (group leader only)",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "walkId",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "sightingId",
+            "required": true
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Sighting deleted"
+          },
+          "401": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/walks/{walkId}/sightings/{sightingId}/submit": {
+      "post": {
+        "operationId": "submitSighting",
+        "tags": [
+          "RafflesGo"
+        ],
+        "description": "Submit a draft sighting and lock it (group leader only)",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "walkId",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "sightingId",
+            "required": true
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "sighting_id",
+                    "walk_id",
+                    "recorded_by_user_id",
+                    "adult_count",
+                    "juvenile_count",
+                    "infant_count",
+                    "behavior",
+                    "notes",
+                    "images_references",
+                    "observation_timestamp",
+                    "latitude",
+                    "longitude",
+                    "submission_status"
+                  ],
+                  "properties": {
+                    "sighting_id": {
+                      "type": "string"
+                    },
+                    "walk_id": {
+                      "type": "string"
+                    },
+                    "recorded_by_user_id": {
+                      "type": "string"
+                    },
+                    "adult_count": {
+                      "type": "number"
+                    },
+                    "juvenile_count": {
+                      "type": "number"
+                    },
+                    "infant_count": {
+                      "type": "number"
+                    },
+                    "behavior": {
+                      "type": "string"
+                    },
+                    "notes": {
+                      "type": "string"
+                    },
+                    "images_references": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "observation_timestamp": {
+                      "type": "string"
+                    },
+                    "last_edited_at": {
+                      "type": "string"
+                    },
+                    "latitude": {
+                      "type": "number"
+                    },
+                    "longitude": {
+                      "type": "number"
+                    },
+                    "submission_status": {
+                      "type": "string",
+                      "enum": [
+                        "DRAFT",
+                        "SUBMITTED"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/export": {
+      "get": {
+        "operationId": "exportSurveyData",
+        "tags": [
+          "RafflesGo"
+        ],
+        "description": "Export survey sighting data as a CSV file (admin only)",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "format",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "walkId",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "startDate",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "endDate",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "boolean"
+            },
+            "in": "query",
+            "name": "anonymize",
+            "required": false
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "CSV file contents",
+            "content": {
+              "text/csv": {
+                "schema": {
+                  "description": "CSV file contents",
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Default Response",
+            "content": {
+              "text/csv": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Default Response",
+            "content": {
+              "text/csv": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Default Response",
+            "content": {
+              "text/csv": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Default Response",
+            "content": {
+              "text/csv": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error"
+                  ],
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000"
+    }
+  ],
+  "tags": [
+    {
+      "name": "RafflesGo",
+      "description": "RafflesGo API endpoints"
+    }
+  ]
+}
